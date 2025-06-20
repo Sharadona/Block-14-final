@@ -1,7 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Navbar from "../components/Navbar.vue";
 
 const routes = [
+  {
+    path: '/auth',
+    name: 'Auth',
+    component: () => import('../views/Auth.vue'),
+  },
   {
     path: '/',
     name: 'Home',
@@ -11,11 +17,16 @@ const routes = [
     path: '/about',
     name: 'About',
     component: () => import('../views/About.vue')
+  },
+  {
+    path: '/navbar',
+    name: 'Navbar',
+    component: Navbar
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory('https://7e91a37cae1a70b7.mokky.dev/'),
+  history: createWebHistory(),
   routes
 })
 
