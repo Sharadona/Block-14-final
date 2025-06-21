@@ -1,17 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Navbar from "../components/Navbar.vue";
+
 
 const routes = [
   {
     path: '/auth',
     name: 'Auth',
-    component: () => import('../views/Auth.vue'),
+    component: () => import("../views/Auth.vue"),
   },
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import("../views/Home.vue"),
   },
   {
     path: '/about',
@@ -21,7 +20,7 @@ const routes = [
   {
     path: '/navbar',
     name: 'Navbar',
-    component: Navbar
+    component: () => import('../components/Navbar.vue'),
   }
 ]
 
