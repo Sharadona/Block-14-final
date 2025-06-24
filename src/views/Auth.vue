@@ -1,15 +1,16 @@
+// Окно авторизации
 <template>
-  <form class="card container" @submit.prevent="check">
+  <form class="card container" @submit.prevent="checkAccount">
     <h1>Войти в систему</h1>
 
     <div class="form-control">
       <label for="email">Email</label>
-      <input type="email" id="email" v-model="email" required>
+      <input type="email" id="email" v-model="dataUser.email" required>
     </div>
 
     <div class="form-control">
       <label for="password">Пароль</label>
-      <input type="password" id="password" v-model="password" required>
+      <input type="password" id="password" v-model="dataUser.password" required>
     </div>
 
     <button class="btn primary" type="submit">Войти</button>
@@ -17,7 +18,6 @@
       Вы слишком часто пытаетесь войти в систему. Попробуйте позже
     </div>
   </form>
-  <button class="btn primary" @click="increment">Добавить {{counter}}</button>
 </template>
 
 <script>
@@ -28,21 +28,27 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter()
-    const email = ref('')
-    const password = ref('')
 
-    function check() {
-      if (email.value === 'ma@ma.ru' && password.value === '12345') {
+    const dataUser = ref({
+        email: '',
+        password: '',
+    })
+
+    /*Вызываю асинхронную функцию для проверки правильности введёного email и password
+    * Проверяю, соответствует email и password тем, что есть на сервере
+    * */
+    function checkAccount() {
+      store.dispatch("checkAccount", {
+        email: dataUser.value.email,
+        password: dataUser.value.password
+      })
+      if (dataUser.value.email === 'ma@ma.ru' && dataUser.value.password === '12345') {
         router.push('/navbar')
       }
     }
-
     return {
-      email,
-      password,
-      check,
-      counter: computed(() => store.state.counter),
-      increment: () => store.commit('increment', 1)
+      dataUser,
+      checkAccount
     }
   }
 }
