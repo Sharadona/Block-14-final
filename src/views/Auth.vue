@@ -1,5 +1,6 @@
 // Окно авторизации
 <template>
+  <errors/>
   <form class="card container" @submit.prevent="checkAccount">
     <h1>Войти в систему</h1>
 
@@ -24,6 +25,7 @@
 import {useStore} from "vuex";
 import {useRouter} from "vue-router"
 import {ref,computed} from "vue"
+import Errors from "../utils/Errors.vue";
 export default {
   setup() {
     const store = useStore();
@@ -50,7 +52,8 @@ export default {
       dataUser,
       checkAccount
     }
-  }
+  },
+  components: {Errors}
 }
 </script>
 
