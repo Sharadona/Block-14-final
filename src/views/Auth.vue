@@ -45,7 +45,7 @@ export default {
         password: dataUser.value.password
       })
       if (dataUser.value.email === 'ma@ma.ru' && dataUser.value.password === '12345') {
-        router.push('/navbar')
+        // router.push('/navbar')
       }
     }
     return {
