@@ -1,6 +1,19 @@
 // Окно авторизации
 <template>
-  <errors/>
+  <div v-if="authStatus">
+    <errors
+        v-if="isAuth"
+        status="primary"
+        title="Успех!"
+        description="Пароль верный"
+    ></errors>
+    <errors
+        v-else
+        status="danger"
+        title="Ошибка!"
+        description="Пароль неверный"
+    ></errors>
+  </div>
   <form class="card container" @submit.prevent="checkAccount">
     <h1>Войти в систему</h1>
 
@@ -36,6 +49,10 @@ export default {
         password: '',
     })
 
+    const isAuth = computed(() => {
+      return store.state.token
+    })
+    const authStatus = ref(false)
     /*Вызываю асинхронную функцию для проверки правильности введёного email и password
     * Проверяю, соответствует email и password тем, что есть на сервере
     * */
@@ -44,13 +61,18 @@ export default {
         email: dataUser.value.email,
         password: dataUser.value.password
       })
+      authStatus.value = true
+      setTimeout(() => authStatus.value = false, 3000)
       if (dataUser.value.email === 'ma@ma.ru' && dataUser.value.password === '12345') {
         // router.push('/navbar')
       }
     }
+
     return {
       dataUser,
-      checkAccount
+      checkAccount,
+      authStatus,
+      isAuth
     }
   },
   components: {Errors}

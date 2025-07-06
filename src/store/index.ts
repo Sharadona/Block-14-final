@@ -7,12 +7,13 @@ export default createStore({
         email: '',
         password: ''
       },
-      accounts: []
+      accounts: [],
+      token: null
     }
   },
   getters: {
-    // email: state => state.account.email,
-    // password: state => state.account.password,
+    email: state => state.account.email,
+    password: state => state.account.password,
   },
   mutations: {
     // increment(state, n) {
@@ -22,9 +23,13 @@ export default createStore({
     /*Передаю в массив ответ от сервера*/
     setAccount(state, payload) {
       state.accounts.push(payload)
-      // console.log(state.account)
-      // console.log(payload)
-      console.log(state.accounts)
+      state.token = payload.token
+      console.log(payload.token)
+      console.log(payload)
+    },
+    setData(state, payload) {
+      state.account = payload
+      console.log(payload)
     }
   },
   actions: {
@@ -35,7 +40,8 @@ export default createStore({
       //   email: 'ma@ma.ru',
       //   password: '12345',
       // }
-      console.log(payload)
+
+
       const response = await fetch("https://7e91a37cae1a70b7.mokky.dev/auth", {
       method: "POST",
       headers: {
@@ -44,8 +50,9 @@ export default createStore({
       },
       body: JSON.stringify(payload)
       });
-      const account = await response.json();
-      context.commit('setAccount', account);
+        const account = await response.json();
+        context.commit('setAccount', account)
+        context.commit('setData', payload)
     }
   },
   modules: {
