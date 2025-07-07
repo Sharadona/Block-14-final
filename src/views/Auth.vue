@@ -19,12 +19,14 @@
 
     <div class="form-control">
       <label for="email">Email</label>
-      <input type="email" id="email" v-model="dataUser.email" required>
+      <input type="email" id="email" v-model="dataUser.email">
+      <small v-if="checkFill">Поле email не может быть пустым!</small>
     </div>
 
     <div class="form-control">
       <label for="password">Пароль</label>
-      <input type="password" id="password" v-model="dataUser.password" required>
+      <input type="password" id="password" v-model="dataUser.password">
+      <small v-if="checkFill">Пароль не может быть пустым!</small>
     </div>
 
     <button class="btn primary" type="submit">Войти</button>
@@ -53,6 +55,13 @@ export default {
       return store.state.token
     })
     const authStatus = ref(false)
+    const checkFill = ref(false)
+
+    const checkForm = computed(() => {
+      if(dataUser.value.email === '' && dataUser.value.password === '') {
+        return checkFill.value = true
+      }
+    })
     /*Вызываю асинхронную функцию для проверки правильности введёного email и password
     * Проверяю, соответствует email и password тем, что есть на сервере
     * */
@@ -61,6 +70,8 @@ export default {
         email: dataUser.value.email,
         password: dataUser.value.password
       })
+
+      checkFill.value = false
       authStatus.value = true
       setTimeout(() => authStatus.value = false, 3000)
       if (dataUser.value.email === 'ma@ma.ru' && dataUser.value.password === '12345') {
@@ -68,11 +79,14 @@ export default {
       }
     }
 
+
     return {
       dataUser,
       checkAccount,
       authStatus,
-      isAuth
+      isAuth,
+      checkFill,
+      checkForm
     }
   },
   components: {Errors}
